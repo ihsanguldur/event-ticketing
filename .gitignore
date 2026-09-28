@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+*.tsbuildinfo
+
+# tests
+coverage/
+
+# env (only .env.example is committed)
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
