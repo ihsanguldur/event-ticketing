@@ -7,6 +7,7 @@ import { redisConfig } from './config/redis.config.js';
 import { mailConfig } from './config/mail.config.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './database/data-source-options.js';
+import { VenuesModule } from './venues/venues.module.js';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { dataSourceOptions } from './database/data-source-options.js';
       useFactory: (db: ConfigType<typeof databaseConfig>) =>
         dataSourceOptions(db),
     }),
+    VenuesModule,
   ],
 })
 export class AppModule {}
