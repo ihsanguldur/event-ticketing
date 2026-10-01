@@ -87,6 +87,9 @@ Dependencies are treated as untrusted code. These protections are active:
 | `rxjs`                                                       | Nest's interceptors and streams are built on Observables                             |
 | `@nestjs/config`                                             | Loads `.env`, exposes typed, namespaced config through DI                            |
 | `zod`                                                        | Validates environment variables at startup and infers their types; zero dependencies |
+| `typeorm`, `pg`                                              | ORM with first-class pessimistic locking (`FOR UPDATE`), and the Postgres driver     |
+| `@nestjs/typeorm`                                            | Wires the TypeORM data source and repositories into Nest's DI                        |
+| `class-validator`, `class-transformer`                       | Request DTO validation and type conversion for Nest's `ValidationPipe`               |
 
 Development only: `@nestjs/cli`, `@nestjs/schematics`, `@nestjs/testing`, `typescript`, `vitest`, `@vitest/coverage-v8`, `vite-tsconfig-paths`, `supertest`, `oxlint`, `oxlint-tsgolint`, `prettier`, `source-map-support`, `@types/*`.
 
