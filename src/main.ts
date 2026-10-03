@@ -3,9 +3,12 @@ import { AppModule } from './app.module.js';
 import type { ConfigType } from '@nestjs/config';
 import { appConfig } from './config/app.config.js';
 import { ValidationPipe } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+
+  app.useLogger(app.get(Logger));
 
   app.useGlobalPipes(
     new ValidationPipe({

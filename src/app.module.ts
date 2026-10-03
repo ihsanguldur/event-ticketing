@@ -8,6 +8,12 @@ import { mailConfig } from './config/mail.config.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './database/data-source-options.js';
 import { VenuesModule } from './venues/venues.module.js';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
+import type { IncomingMessage, ServerResponse } from 'node:http';
+import { resolveRequestId } from './common/request-id.js';
+import { ClsModule } from 'nestjs-cls';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -17,6 +23,31 @@ import { VenuesModule } from './venues/venues.module.js';
       validate: parseEnv,
       load: [appConfig, databaseConfig, redisConfig, mailConfig],
     }),
+    ClsModule.forRoot({
+      global: true,
+      middleware: {
+        mount: true,
+        generateId: true,
+        idGenerator: (req: IncomingMessage) => resolveRequestId(req),
+        setup: (cls, _req, res: ServerResponse) => {
+          res.setHeader('X-Request-Id', cls.getId());
+        },
+      },
+    }),
+    LoggerModule.forRootAsync({
+      inject: [appConfig.KEY],
+      useFactory: (app: ConfigType<typeof appConfig>) => ({
+        pinoHttp: {
+          level: app.nodeEnv === 'production' ? 'info' : 'debug',
+          genReqId: (req) => resolveRequestId(req),
+          redact: ['req.headers.authorization', 'req.headers.cookie'],
+          transport:
+            app.nodeEnv === 'development'
+              ? { target: 'pino-pretty', options: { singleLine: true } }
+              : undefined,
+        },
+      }),
+    }),
     TypeOrmModule.forRootAsync({
       inject: [databaseConfig.KEY],
       useFactory: (db: ConfigType<typeof databaseConfig>) =>
@@ -24,5 +55,6 @@ import { VenuesModule } from './venues/venues.module.js';
     }),
     VenuesModule,
   ],
+  providers: [{ provide: APP_FILTER, useClass: AllExceptionsFilter }],
 })
 export class AppModule {}
