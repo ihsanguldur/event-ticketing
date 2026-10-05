@@ -1,13 +1,16 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsInt, IsOptional, IsString, Length, Max, Min } from 'class-validator';
 
 export class ListVenuesQueryDto {
+  @ApiPropertyOptional({ type: 'integer' })
   @IsOptional()
   @Type(() => Number)
   @IsInt()
   @Min(1)
   page: number = 1;
 
+  @ApiPropertyOptional({ type: 'integer' })
   @IsOptional()
   @Type(() => Number)
   @IsInt()

@@ -92,6 +92,9 @@ Dependencies are treated as untrusted code. These protections are active:
 | `class-validator`, `class-transformer`                       | Request DTO validation and type conversion for Nest's `ValidationPipe`               |
 | `nestjs-pino`, `pino`, `pino-http`                           | Structured JSON logs; one log line per request, tagged with its request id           |
 | `nestjs-cls`                                                 | Per-request context (AsyncLocalStorage); carries the request id to filters and logs  |
+| `@nestjs/swagger`                                            | OpenAPI document and UI at `/docs` (not in production), generated from DTOs at build |
+
+Denied install scripts (`allowBuilds: false`): `@scarf/scarf`, pulled in by `swagger-ui-dist`. Its `postinstall` only sends install analytics; Swagger UI works without it.
 
 Development only: `@nestjs/cli`, `@nestjs/schematics`, `@nestjs/testing`, `typescript`, `vitest`, `@vitest/coverage-v8`, `vite-tsconfig-paths`, `supertest`, `pino-pretty` (readable logs in development), `oxlint`, `oxlint-tsgolint`, `prettier`, `source-map-support`, `@types/*`.
 

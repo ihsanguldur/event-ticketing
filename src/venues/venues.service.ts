@@ -4,11 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { CreateVenueDto } from './dto/create-venue.dto.js';
+import { CreateVenueDto } from './dto/request/create-venue.dto.js';
 import { Venue } from './entities/venue.entity.js';
 import { Seat } from './entities/seat.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ListVenuesQueryDto } from './dto/list-venues-query.dto.js';
+import { ListVenuesQueryDto } from './dto/request/list-venues-query.dto.js';
 
 const MAX_SEATS_PER_VENUE = 10_000;
 
