@@ -90,8 +90,10 @@ Dependencies are treated as untrusted code. These protections are active:
 | `typeorm`, `pg`                                              | ORM with first-class pessimistic locking (`FOR UPDATE`), and the Postgres driver     |
 | `@nestjs/typeorm`                                            | Wires the TypeORM data source and repositories into Nest's DI                        |
 | `class-validator`, `class-transformer`                       | Request DTO validation and type conversion for Nest's `ValidationPipe`               |
+| `nestjs-pino`, `pino`, `pino-http`                           | Structured JSON logs; one log line per request, tagged with its request id           |
+| `nestjs-cls`                                                 | Per-request context (AsyncLocalStorage); carries the request id to filters and logs  |
 
-Development only: `@nestjs/cli`, `@nestjs/schematics`, `@nestjs/testing`, `typescript`, `vitest`, `@vitest/coverage-v8`, `vite-tsconfig-paths`, `supertest`, `oxlint`, `oxlint-tsgolint`, `prettier`, `source-map-support`, `@types/*`.
+Development only: `@nestjs/cli`, `@nestjs/schematics`, `@nestjs/testing`, `typescript`, `vitest`, `@vitest/coverage-v8`, `vite-tsconfig-paths`, `supertest`, `pino-pretty` (readable logs in development), `oxlint`, `oxlint-tsgolint`, `prettier`, `source-map-support`, `@types/*`.
 
 ## Getting started
 
