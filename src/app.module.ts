@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule, type ConfigType } from '@nestjs/config';
 import { parseEnv } from './config/env.js';
 import { appConfig } from './config/app.config.js';
@@ -8,12 +8,13 @@ import { mailConfig } from './config/mail.config.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './database/data-source-options.js';
 import { VenuesModule } from './venues/venues.module.js';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { resolveRequestId } from './common/request-id.js';
 import { ClsModule } from 'nestjs-cls';
 import { LoggerModule } from 'nestjs-pino';
+import { TimingInterceptor } from './common/interceptors/timing.interceptor.js';
 
 @Module({
   imports: [
@@ -55,6 +56,10 @@ import { LoggerModule } from 'nestjs-pino';
     }),
     VenuesModule,
   ],
-  providers: [{ provide: APP_FILTER, useClass: AllExceptionsFilter }],
+  providers: [
+    { provide: APP_FILTER, useClass: AllExceptionsFilter },
+    { provide: APP_INTERCEPTOR, useClass: TimingInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+  ],
 })
 export class AppModule {}

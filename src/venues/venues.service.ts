@@ -56,7 +56,7 @@ export class VenuesService {
       }
       await manager.insert(Seat, seats);
 
-      return { ...venue, seatCount };
+      return Object.assign(venue, { seatCount });
     });
   }
 
@@ -77,6 +77,6 @@ export class VenuesService {
     }
 
     const seatCount = await this.seats.countBy({ venueId: id });
-    return { ...venue, seatCount };
+    return Object.assign(venue, { seatCount });
   }
 }
