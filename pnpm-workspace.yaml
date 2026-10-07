@@ -3,3 +3,4 @@ trustPolicy: no-downgrade
 savePrefix: ''
 allowBuilds:
   '@scarf/scarf': false
+  argon2: false

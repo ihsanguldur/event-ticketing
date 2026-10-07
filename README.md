@@ -93,8 +93,13 @@ Dependencies are treated as untrusted code. These protections are active:
 | `nestjs-pino`, `pino`, `pino-http`                           | Structured JSON logs; one log line per request, tagged with its request id           |
 | `nestjs-cls`                                                 | Per-request context (AsyncLocalStorage); carries the request id to filters and logs  |
 | `@nestjs/swagger`                                            | OpenAPI document and UI at `/docs` (not in production), generated from DTOs at build |
+| `argon2`                                                     | Password hashing with argon2id (memory-hard, salted, PHC-formatted hashes)           |
+| `@nestjs/jwt`                                                | Signs and verifies access tokens (wraps `jsonwebtoken`); no Passport                 |
 
-Denied install scripts (`allowBuilds: false`): `@scarf/scarf`, pulled in by `swagger-ui-dist`. Its `postinstall` only sends install analytics; Swagger UI works without it.
+Denied install scripts (`allowBuilds: false`):
+
+- `@scarf/scarf`, pulled in by `swagger-ui-dist`. Its `postinstall` only sends install analytics; Swagger UI works without it.
+- `argon2`. Its `install` script compiles the native addon from source, but the package ships prebuilt binaries for common platforms, which it loads at runtime.
 
 Development only: `@nestjs/cli`, `@nestjs/schematics`, `@nestjs/testing`, `typescript`, `vitest`, `@vitest/coverage-v8`, `vite-tsconfig-paths`, `supertest`, `pino-pretty` (readable logs in development), `oxlint`, `oxlint-tsgolint`, `prettier`, `source-map-support`, `@types/*`.
 
