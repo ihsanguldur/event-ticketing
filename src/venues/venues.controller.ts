@@ -13,6 +13,7 @@ import { ListVenuesQueryDto } from './dto/request/list-venues-query.dto.js';
 import { VenueDetailResponseDto } from './dto/response/venue-detail-response.dto.js';
 import { VenuePageResponseDto } from './dto/response/venue-page-response.dto.js';
 import { ApiParam } from '@nestjs/swagger';
+import { Public } from '../auth/decorators/public.decorator.js';
 
 @Controller('venues')
 export class VenuesController {
@@ -23,11 +24,13 @@ export class VenuesController {
     return this.venuesService.create(dto);
   }
 
+  @Public()
   @Get()
   findAll(@Query() query: ListVenuesQueryDto): Promise<VenuePageResponseDto> {
     return this.venuesService.findAll(query);
   }
 
+  @Public()
   @Get(':id')
   @ApiParam({ name: 'id', format: 'uuid' })
   findOne(

@@ -28,6 +28,7 @@ async function bootstrap() {
       .setTitle('event-ticketing')
       .setVersion('0.1')
       .addBearerAuth()
+      .addSecurityRequirements('bearer')
       .build();
     SwaggerModule.setup('docs', app, () =>
       SwaggerModule.createDocument(app, config),

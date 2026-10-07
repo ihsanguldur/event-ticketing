@@ -15,6 +15,8 @@ import { resolveRequestId } from './common/request-id.js';
 import { ClsModule } from 'nestjs-cls';
 import { LoggerModule } from 'nestjs-pino';
 import { TimingInterceptor } from './common/interceptors/timing.interceptor.js';
+import { AuthModule } from './auth/auth.module.js';
+import { authConfig } from './config/auth.config.js';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { TimingInterceptor } from './common/interceptors/timing.interceptor.js';
       isGlobal: true,
       cache: true,
       validate: parseEnv,
-      load: [appConfig, databaseConfig, redisConfig, mailConfig],
+      load: [appConfig, databaseConfig, redisConfig, mailConfig, authConfig],
     }),
     ClsModule.forRoot({
       global: true,
@@ -55,6 +57,7 @@ import { TimingInterceptor } from './common/interceptors/timing.interceptor.js';
         dataSourceOptions(db),
     }),
     VenuesModule,
+    AuthModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
