@@ -11,12 +11,14 @@ import { JwtService } from '@nestjs/jwt';
 import type { JwtPayload } from './jwt-payload.js';
 import { LoginDto } from './dto/request/login.dto.js';
 import { TokenResponseDto } from './dto/response/token-response.dto.js';
+import { RefreshTokensService } from './refresh-tokens.service.js';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly refreshTokens: RefreshTokensService,
   ) {}
 
   async register(dto: RegisterDto): Promise<User> {
@@ -32,7 +34,24 @@ export class AuthService {
     if (!user || !(await verify(user.passwordHash, dto.password))) {
       throw new UnauthorizedException('invalid credentials');
     }
+    return {
+      accessToken: await this.signAccessToken(user),
+      refreshToken: await this.refreshTokens.issue(user.id),
+    };
+  }
+
+  async refresh(token: string): Promise<TokenResponseDto> {
+    const { userId, refreshToken } = await this.refreshTokens.rotate(token);
+    const user = await this.usersService.findById(userId);
+    return { accessToken: await this.signAccessToken(user), refreshToken };
+  }
+
+  logout(token: string): Promise<void> {
+    return this.refreshTokens.revoke(token);
+  }
+
+  private signAccessToken(user: User): Promise<string> {
     const payload: JwtPayload = { sub: user.id, role: user.role };
-    return { accessToken: await this.jwtService.signAsync(payload) };
+    return this.jwtService.signAsync(payload);
   }
 }

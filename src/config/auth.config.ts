@@ -7,5 +7,6 @@ export const authConfig = registerAs('auth', () => {
   return {
     accessSecret: env.JWT_ACCESS_SECRET,
     accessTtl: env.JWT_ACCESS_TTL,
+    refreshTtl: env.REFRESH_TOKEN_TTL,
   };
 });
