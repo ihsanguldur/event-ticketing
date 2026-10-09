@@ -6,6 +6,7 @@ const envSchema = z.object({
 
   JWT_ACCESS_SECRET: z.string().min(32),
   JWT_ACCESS_TTL: z.coerce.number().int().positive(),
+  REFRESH_TOKEN_TTL: z.coerce.number().int().positive(),
 
   DB_HOST: z.string().min(1),
   DB_PORT: z.coerce.number().int().positive(),
